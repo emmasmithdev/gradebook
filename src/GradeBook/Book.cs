@@ -1,14 +1,24 @@
 using System;
 using System.Collections.Generic;
 
-namespace GradeBook{
+namespace GradeBook
+{
+    public delegate void GradeAddedDelegate(object sender, EventArgs args);
 
    public class Book
     {   
         // Properties
         // Default access modifier is private
         private List<double> grades;
-        public string Name;
+        public string Name
+        {
+            get; 
+            set;
+        }
+
+        public const string CATEGORY = "Science"; // This is a static property. (Book.CATEGORY)
+
+        public event GradeAddedDelegate GradeAdded; // This is an event property. 
 
         // Constructor
         public Book(string name)
@@ -23,6 +33,10 @@ namespace GradeBook{
             if(grade <= 100 && grade >= 0)
             {
                 grades.Add(grade);
+                if(GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
             }
             else
             {
@@ -31,7 +45,8 @@ namespace GradeBook{
             
         }
 
-        public void AddLetterGrade(char letter)
+       
+        public void AddGrade(char letter)
         {
             switch(letter)
             {
